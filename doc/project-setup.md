@@ -1,7 +1,7 @@
 
 
 
-Let's install scala!
+# Let's install scala!
 
 1. JDK
   - do java -version, you should expect to see something like:
@@ -32,5 +32,18 @@ Let's install scala!
     - run it as test
 
 6. When you are able to run the tests, feel free to go ;)
+
+
+
+# Troubleshooting
+* If you have problems about unresolved dependencies while installing sbt:
+    - Add this into file ~/.sbt/repositories
+```
+[repositories]
+  local
+  sbt-releases-repo: http://repo.typesafe.com/typesafe/ivy-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
+  sbt-plugins-repo: http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
+  maven-central: http://repo1.maven.org/maven2/
+```
   
   
