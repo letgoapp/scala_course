@@ -1,6 +1,3 @@
-
-
-
 # Let's install scala!
 
 1. JDK
