@@ -17,11 +17,11 @@
   - once inside the sbt console => run 'test'
 
 4. Install IntelliJ
-  - mac & linux => go to website
-  - install scala plugin (go to preferences -> plugins)
+  - mac & linux => https://www.jetbrains.com/idea/#chooseYourEdition
+  - install scala plugin (go to preferences -> plugins -> search for "Scala")
 
 5. Open repo in IntelliJ
-  - go to `open` -> click on build.sbt in the folder
+  - go to `File` -> `Open… -> click on build.sbt in the folder
   - click OK on everything
   - try to run tests from inside intellij
     - right click on 
