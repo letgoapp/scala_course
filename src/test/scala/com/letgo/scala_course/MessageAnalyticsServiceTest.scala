@@ -2,7 +2,7 @@ package com.letgo.scala_course
 
 import org.scalatest.{Matchers, WordSpec}
 
-import com.letgo.scala_course.domain.{Message, UserMessage, UserName}
+import com.letgo.scala_course.domain.{Message, MessageText, UserId}
 import com.letgo.scala_course.domain.service.MessageAnalyticsService
 
 class MessageAnalyticsServiceTest extends WordSpec with Matchers {
@@ -13,12 +13,12 @@ class MessageAnalyticsServiceTest extends WordSpec with Matchers {
 
       val msgAnalyticsService = new MessageAnalyticsService()
 
-      val javi   = UserName("javi")
-      val gerard = UserName("gerard")
+      val javi   = UserId("javi")
+      val gerard = UserId("gerard")
 
-      val messages = Seq(UserMessage(javi, Message("cosa fina")),
-                         UserMessage(gerard, Message("done > unit")),
-                         UserMessage(javi, Message("tengo la sala reservada")))
+      val messages = Seq(Message(javi, MessageText("cosa fina")),
+                         Message(gerard, MessageText("done > unit")),
+                         Message(javi, MessageText("tengo la sala reservada")))
 
       msgAnalyticsService.countMessagesOfUser(messages, javi) shouldBe 2
     }
@@ -36,12 +36,12 @@ class MessageAnalyticsServiceTest extends WordSpec with Matchers {
 
       msgAnalyticsService.groupByUserName(
         Seq(
-          UserMessage(
-            UserName("Jorge Avila"),
-            Message("Me tengo que pelar")
+          Message(
+            UserId("Jorge Avila"),
+            MessageText("Me tengo que pelar")
           )
         )
-      ) should contain theSameElementsAs Map(UserName("Jorge Avila") -> Seq(Message("Me tengo que pelar")))
+      ) should contain theSameElementsAs Map(UserId("Jorge Avila") -> Seq(MessageText("Me tengo que pelar")))
     }
 
     "group messages by user" in {
@@ -50,45 +50,45 @@ class MessageAnalyticsServiceTest extends WordSpec with Matchers {
 
       msgAnalyticsService.groupByUserName(
         Seq(
-          UserMessage(
-            UserName("Jorge Avila"),
-            Message("Me tengo que pelar")
+          Message(
+            UserId("Jorge Avila"),
+            MessageText("Me tengo que pelar")
           ),
-          UserMessage(
-            UserName("SergiGP"),
-            Message("La burbuja va a estallar")
+          Message(
+            UserId("SergiGP"),
+            MessageText("La burbuja va a estallar")
           ),
-          UserMessage(
-            UserName("SergiGP"),
-            Message("Ya llegareis")
+          Message(
+            UserId("SergiGP"),
+            MessageText("Ya llegareis")
           ),
-          UserMessage(
-            UserName("Dani De Ripo"),
-            Message("El TT es un iman...")
+          Message(
+            UserId("Dani De Ripo"),
+            MessageText("El TT es un iman...")
           ),
-          UserMessage(
-            UserName("JaviCane"),
-            Message("Cosa fina")
+          Message(
+            UserId("JaviCane"),
+            MessageText("Cosa fina")
           ),
-          UserMessage(
-            UserName("Jorge Avila"),
-            Message("Yo fui a las pruebas de la Real")
+          Message(
+            UserId("Jorge Avila"),
+            MessageText("Yo fui a las pruebas de la Real")
           )
         )
       ) should contain theSameElementsAs Map(
-        UserName("Jorge Avila") -> Seq(
-          Message("Me tengo que pelar"),
-          Message("Yo fui a las pruebas de la Real")
+        UserId("Jorge Avila") -> Seq(
+          MessageText("Me tengo que pelar"),
+          MessageText("Yo fui a las pruebas de la Real")
         ),
-        UserName("SergiGP") -> Seq(
-          Message("La burbuja va a estallar"),
-          Message("Ya llegareis")
+        UserId("SergiGP") -> Seq(
+          MessageText("La burbuja va a estallar"),
+          MessageText("Ya llegareis")
         ),
-        UserName("Dani De Ripo") -> Seq(
-          Message("El TT es un iman...")
+        UserId("Dani De Ripo") -> Seq(
+          MessageText("El TT es un iman...")
         ),
-        UserName("JaviCane") -> Seq(
-          Message("Cosa fina")
+        UserId("JaviCane") -> Seq(
+          MessageText("Cosa fina")
         )
       )
     }

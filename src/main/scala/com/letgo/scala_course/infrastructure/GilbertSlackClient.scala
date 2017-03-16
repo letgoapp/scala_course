@@ -5,7 +5,8 @@ import scala.concurrent.{ExecutionContext, Future}
 import akka.actor.ActorSystem
 import slack.api.SlackApiClient
 
-import com.letgo.scala_course.domain.{ChannelId, Message, SlackClient}
+import com.letgo.scala_course.domain._
+import com.letgo.scala_course.infrastructure.GilbertSlackClientMessageReads.messageReads
 
 class GilbertSlackClient(implicit as: ActorSystem, ec: ExecutionContext) extends SlackClient {
   private val token  = sys.env("LETGO_SCALA_COURSE_SLACK_API_TOKEN")
@@ -13,11 +14,9 @@ class GilbertSlackClient(implicit as: ActorSystem, ec: ExecutionContext) extends
 
   override def fetchChannelMessages(channelId: ChannelId): Future[Seq[Message]] =
     client.getChannelHistory(channelId.rawChannelId).map { historyChunk =>
-      historyChunk.messages.map { jsValue =>
-        Message((jsValue \ "text").as[String])
-      }
+      historyChunk.messages.map(json => json.as[Message])
     }
 
   override def addMessage(channel: ChannelId, message: Message): Future[Unit] =
-    client.postChatMessage(channel.rawChannelId, message.text).map(_ => ())
+    client.postChatMessage(channel.rawChannelId, message.text.rawText).map(_ => ())
 }

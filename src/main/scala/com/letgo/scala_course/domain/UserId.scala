@@ -1,4 +1,3 @@
 package com.letgo.scala_course.domain
 
-case class UserName(name: String)
-
+case class UserId(rawUserName: String)

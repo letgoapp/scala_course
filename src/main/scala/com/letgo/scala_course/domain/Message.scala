@@ -1,3 +1,3 @@
 package com.letgo.scala_course.domain
 
-case class Message(text: String)
+case class Message(userId: UserId, text: MessageText)

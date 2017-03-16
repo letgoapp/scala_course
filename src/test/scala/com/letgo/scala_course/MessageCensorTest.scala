@@ -6,7 +6,7 @@ import org.scalatest.time.{Millis, Seconds, Span}
 import org.scalatest.{GivenWhenThen, WordSpec}
 
 import com.letgo.scala_course.domain.service.MessageCensor
-import com.letgo.scala_course.domain.Message
+import com.letgo.scala_course.domain.MessageText
 
 class MessageCensorTest extends WordSpec with GivenWhenThen with ScalaFutures {
 
@@ -23,13 +23,13 @@ class MessageCensorTest extends WordSpec with GivenWhenThen with ScalaFutures {
       val censor = new MessageCensor(forbiddenKeywords)
 
       val myMessages = Seq(
-        Message("go fuck yourself"),
-        Message("i love jorge")
+        MessageText("go fuck yourself"),
+        MessageText("i love jorge")
       )
 
       val expectedCensoredMessages = Seq(
-        Message("go yourself"),
-        Message("i love")
+        MessageText("go yourself"),
+        MessageText("i love")
       )
 
       val censoredMessages = censor.filterMessages(myMessages)

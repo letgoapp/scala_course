@@ -1,12 +1,12 @@
 package com.letgo.scala_course.domain.service
 
-import com.letgo.scala_course.domain.{Message, UserMessage, UserName}
+import com.letgo.scala_course.domain.{Message, MessageText, UserId}
 
 class MessageAnalyticsService {
 
-  def countMessagesOfUser(messages: Seq[UserMessage], userName: UserName): Int =
-    messages.count(_.userName == userName)
+  def countMessagesOfUser(messages: Seq[Message], userId: UserId): Int =
+    messages.count(_.userId == userId)
 
-  def groupByUserName(messages: Seq[UserMessage]): Map[UserName, Seq[Message]] =
-    messages.groupBy(_.userName).mapValues(_.map(_.message))
+  def groupByUserName(messages: Seq[Message]): Map[UserId, Seq[MessageText]] =
+    messages.groupBy(_.userId).mapValues(_.map(_.text))
 }
