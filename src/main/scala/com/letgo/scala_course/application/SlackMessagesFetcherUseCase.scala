@@ -11,7 +11,7 @@ class SlackMessagesFetcherUseCase(slackClient: SlackClient)(implicit ec: Executi
 
   def fetch(channelName: ChannelId): Future[Seq[AuthoredMessage]] = {
     numberOfApiCalls += 1
-    slackClient.fetchChannelMessages(channelName)
+    slackClient.fetchLatestChannelMessages(channelName)
   }
 
   def fetchWithCache(channelName: ChannelId): Future[Seq[AuthoredMessage]] = cache.getOrElse {
