@@ -6,12 +6,21 @@ import com.letgo.scala_course.domain.MessageAction
 
 object MessageActionStub {
   def create(
-    text: String = StringStub.randomWithMaxLength(256),
-    name: String = StringStub.randomWithMaxLength(20),
+    text: String = StringStub.notEmptyRandomWithMaxLength(30),
+    name: String = StringStub.notEmptyRandomWithMaxLength(10),
     requireConfirmation: Boolean = Random.nextBoolean()
   ): MessageAction = MessageAction(text, name, requireConfirmation)
 
   def random: MessageAction = create()
 
-  def randomSet(numElements: Int = Random.nextInt(9)): Set[MessageAction] = (1 to numElements).map(_ => random).toSet
+  def randomSeq(numElements: Int = Random.nextInt(2)): Option[Seq[MessageAction]] = {
+    if (numElements == 0) {
+      None
+    } else {
+      Some(randomNonEmptySeq(numElements))
+    }
+  }
+
+  def randomNonEmptySeq(numElements: Int = IntStub.randomNotZero(2)): Seq[MessageAction] =
+    (0 to numElements).map(_ => random)
 }

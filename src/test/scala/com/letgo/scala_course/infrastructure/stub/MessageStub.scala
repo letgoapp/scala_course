@@ -3,10 +3,10 @@ package com.letgo.scala_course.infrastructure.stub
 import com.letgo.scala_course.domain._
 
 object MessageStub {
-  private def create(
+  def create(
     text: MessageText = MessageTextStub.random,
-    actions: Set[MessageAction] = MessageActionStub.randomSet()
-  ): Message = Message(text)
+    actions: Option[Seq[MessageAction]] = MessageActionStub.randomSeq()
+  ): Message = Message(text, actions)
 
   def random: Message = create()
 }
