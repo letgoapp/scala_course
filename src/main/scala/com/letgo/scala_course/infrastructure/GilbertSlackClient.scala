@@ -12,9 +12,9 @@ class GilbertSlackClient(implicit as: ActorSystem, ec: ExecutionContext) extends
   private val token  = sys.env("LETGO_SCALA_COURSE_SLACK_API_TOKEN")
   private val client = SlackApiClient(token)
 
-  override def fetchChannelMessages(channelId: ChannelId): Future[Seq[Message]] =
+  override def fetchChannelMessages(channelId: ChannelId): Future[Seq[AuthoredMessage]] =
     client.getChannelHistory(channelId.rawChannelId).map { historyChunk =>
-      historyChunk.messages.map(json => json.as[Message])
+      historyChunk.messages.map(json => json.as[AuthoredMessage])
     }
 
   override def addMessage(channel: ChannelId, message: Message): Future[Unit] =

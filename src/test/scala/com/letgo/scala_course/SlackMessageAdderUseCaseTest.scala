@@ -34,7 +34,18 @@ class SlackMessageAdderUseCaseTest extends WordSpec with GivenWhenThen with Scal
 
       val messages = slackMessagesFetcherUseCase.fetch(scalaCourseChannelId)
 
-      messages.futureValue.head.text shouldBe message.text
+      messages.futureValue.head.message shouldBe message
+    }
+
+    "publish a message with a simple action to a channel" in {
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
+      val message = MessageStub.random
+
+      slackMessageAdderUseCase.add(scalaCourseChannelId, message).futureValue
+
+      val messages = slackMessagesFetcherUseCase.fetch(scalaCourseChannelId)
+
+      messages.futureValue.head.message shouldBe message
     }
   }
 }

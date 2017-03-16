@@ -46,7 +46,7 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       Then("it should return the last added one")
 
-      messages.futureValue.head.text shouldBe message.text
+      messages.futureValue.head.message shouldBe message
     }
 
     "increment the number of calls to the Slack API when executing it" in {
