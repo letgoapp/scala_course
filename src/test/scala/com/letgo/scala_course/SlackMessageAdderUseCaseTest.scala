@@ -8,7 +8,7 @@ import org.scalatest.time.{Millis, Seconds, Span}
 
 import com.letgo.scala_course.application.{SlackMessageAdderUseCase, SlackMessagesFetcherUseCase}
 import com.letgo.scala_course.infrastructure.GilbertSlackClient
-import com.letgo.scala_course.infrastructure.stub.{ChannelIdStub, MessageStub}
+import com.letgo.scala_course.infrastructure.stub.{ChannelIdStub, MessageActionStub, MessageStub}
 
 class SlackMessageAdderUseCaseTest extends WordSpec with GivenWhenThen with ScalaFutures {
   implicit private val actorSystem      = ActorSystem("test-actor-system")
@@ -37,9 +37,9 @@ class SlackMessageAdderUseCaseTest extends WordSpec with GivenWhenThen with Scal
       messages.futureValue.head.message shouldBe message
     }
 
-    "publish a message with a simple action to a channel" in {
+    "publish a message with an action to a channel" in {
       val scalaCourseChannelId = ChannelIdStub.scalaCourse
-      val message = MessageStub.random
+      val message = MessageStub.create(actions = Some(MessageActionStub.randomNonEmptySeq()))
 
       slackMessageAdderUseCase.add(scalaCourseChannelId, message).futureValue
 
