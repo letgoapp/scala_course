@@ -4,5 +4,5 @@ import scala.concurrent.Future
 
 trait SlackClient {
   def fetchChannelMessages(channel: ChannelId): Future[Seq[Message]]
-  def addMessage(channel: ChannelId, message: Message): Future[_]
+  def addMessage(channel: ChannelId, message: Message): Future[Unit]
 }

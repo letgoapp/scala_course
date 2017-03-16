@@ -11,17 +11,13 @@ class GilbertSlackClient(implicit as: ActorSystem, ec: ExecutionContext) extends
   private val token  = sys.env("LETGO_SCALA_COURSE_SLACK_API_TOKEN")
   private val client = SlackApiClient(token)
 
-  override def fetchChannelMessages(channelId: ChannelId): Future[Seq[Message]] = {
-    println(s"You're fetching messages from channel ID: ${channelId.rawChannelId}.")
-
+  override def fetchChannelMessages(channelId: ChannelId): Future[Seq[Message]] =
     client.getChannelHistory(channelId.rawChannelId).map { historyChunk =>
       historyChunk.messages.map { jsValue =>
         Message((jsValue \ "text").as[String])
       }
     }
-  }
 
-  override def addMessage(channel: ChannelId, message: Message): Future[_] = {
-    client.postChatMessage(channel.rawChannelId, message.text)
-  }
+  override def addMessage(channel: ChannelId, message: Message): Future[Unit] =
+    client.postChatMessage(channel.rawChannelId, message.text).map(_ => ())
 }

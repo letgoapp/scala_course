@@ -7,8 +7,9 @@ import org.scalatest.Matchers._
 import org.scalatest.time.{Millis, Seconds, Span}
 
 import com.letgo.scala_course.application.{SlackMessageAdderUseCase, SlackMessagesFetcherUseCase}
-import com.letgo.scala_course.domain.{ChannelId, Message}
+import com.letgo.scala_course.domain.Message
 import com.letgo.scala_course.infrastructure.GilbertSlackClient
+import com.letgo.scala_course.infrastructure.stub.ChannelIdStub
 
 class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with ScalaFutures {
   implicit private val actorSystem      = ActorSystem("test-actor-system")
@@ -31,7 +32,7 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       And("an existing channel name")
 
-      val scalaCourseChannelId = ChannelId("C3YPYMQ2D")
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
 
       And("a published message to the channel")
 
@@ -54,7 +55,7 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       And("an existing channel name")
 
-      val scalaCourseChannelId = ChannelId("C3YPYMQ2D")
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
 
       When("we fetch the channel messages twice")
 
@@ -73,7 +74,7 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       And("an existing channel name")
 
-      val scalaCourseChannelId = ChannelId("C3YPYMQ2D")
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
 
       When("we fetch with cache the channel messages twice")
 
