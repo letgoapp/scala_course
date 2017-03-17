@@ -12,12 +12,12 @@ final class RepositoriesWithPullRequestClosedUseCase(slackClient: SlackClient)(i
 
   def repositoriesWithPullRequestClosed(from: DateTime, channelId: ChannelId): Future[Set[Repository]] = {
     slackClient.fetchLatestChannelMessages(channelId, Some(from)).map { messages =>
-      messages
-        .filter(isPulledRequestClosedMessage)
-        .map(extractRepositoryInformationFromMessage)
-        .toSet
+      // TODO filter the messages that are about closed pull requests and then extract Repository instances from them
+      messages.map(_ => Repository("change", "me")).toSet
     }
   }
+
+  // You will probably need to use the functions below!
 
   private def isPulledRequestClosedMessage(authoredMessage: AuthoredMessage) =
     pullRequestClosedRegex.findFirstIn(authoredMessage.message.text.rawText).isDefined
