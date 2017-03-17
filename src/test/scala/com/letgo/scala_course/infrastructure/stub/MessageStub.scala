@@ -9,4 +9,6 @@ object MessageStub {
   ): Message = Message(text, actions)
 
   def random: Message = create()
+
+  def closedChatPullRequest: Message = create(text = MessageTextStub.closedChatPullRequest, actions = None)
 }

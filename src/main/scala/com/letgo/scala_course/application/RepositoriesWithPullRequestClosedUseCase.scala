@@ -6,11 +6,11 @@ import org.joda.time.DateTime
 
 import com.letgo.scala_course.domain.{AuthoredMessage, ChannelId, Repository, SlackClient}
 
-final class CheckRepositoriesMergedPullRequestUseCase(slackClient: SlackClient)(implicit ec: ExecutionContext) {
+final class RepositoriesWithPullRequestClosedUseCase(slackClient: SlackClient)(implicit ec: ExecutionContext) {
 
   private val pullRequestClosedRegex = """\[(.*)\/(.*)\] Pull request closed: #.* by .*""".r
 
-  def checkRepositoriesWithMergedPullRequests(from: DateTime, channelId: ChannelId): Future[Set[Repository]] = {
+  def repositoriesWithPullRequestClosed(from: DateTime, channelId: ChannelId): Future[Set[Repository]] = {
     slackClient.fetchLatestChannelMessages(channelId, Some(from)).map { messages =>
       messages
         .filter(isPulledRequestClosedMessage)

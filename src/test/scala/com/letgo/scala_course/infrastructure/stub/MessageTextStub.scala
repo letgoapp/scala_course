@@ -9,6 +9,5 @@ object MessageTextStub {
   def random: MessageText = create()
 
   def closedChatPullRequest: MessageText =
-    create(
-      "[letgoapp/chat] Pull request closed: #666 some pull request message - p1 by rockstar_unicorn_ninja_coder")
+    create("[letgoapp/chat] Pull request closed: #666 some pull request message - p1 by rockstar_unicorn_ninja_coder")
 }

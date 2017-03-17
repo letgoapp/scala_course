@@ -44,8 +44,11 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
       Then("it should return the last added one")
 
       eventually {
-        val messages = fetcher.fetch(scalaCourseChannelId).futureValue
-        messages.head.message shouldBe message
+        val authoredMessages = fetcher.fetch(scalaCourseChannelId).futureValue
+
+        val messages = authoredMessages.map(_.message)
+
+        messages should contain(message)
       }
     }
 
