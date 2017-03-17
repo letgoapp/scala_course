@@ -2,8 +2,8 @@ package com.letgo.scala_course
 
 import org.scalatest.{Matchers, WordSpec}
 
-import com.letgo.scala_course.domain.{Message, UserMessage, UserName}
 import com.letgo.scala_course.domain.service.MessageAnalyticsService
+import com.letgo.scala_course.infrastructure.stub.{AuthoredMessageStub, UserIdStub}
 
 class MessageAnalyticsServiceTest extends WordSpec with Matchers {
 
@@ -13,12 +13,14 @@ class MessageAnalyticsServiceTest extends WordSpec with Matchers {
 
       val msgAnalyticsService = new MessageAnalyticsService()
 
-      val javi   = UserName("javi")
-      val gerard = UserName("gerard")
+      val javi = UserIdStub.create("Javi")
+      val gerard = UserIdStub.create("Gerard")
 
-      val messages = Seq(UserMessage(javi, Message("cosa fina")),
-                         UserMessage(gerard, Message("done > unit")),
-                         UserMessage(javi, Message("tengo la sala reservada")))
+      val messages = Seq(
+        AuthoredMessageStub.create(userId = javi),
+        AuthoredMessageStub.create(userId = gerard),
+        AuthoredMessageStub.create(userId = javi)
+      )
 
       msgAnalyticsService.countMessagesOfUser(messages, javi) shouldBe 2
     }
@@ -34,64 +36,33 @@ class MessageAnalyticsServiceTest extends WordSpec with Matchers {
 
       val msgAnalyticsService = new MessageAnalyticsService()
 
-      msgAnalyticsService.groupByUserName(
-        Seq(
-          UserMessage(
-            UserName("Jorge Avila"),
-            Message("Me tengo que pelar")
-          )
-        )
-      ) should contain theSameElementsAs Map(UserName("Jorge Avila") -> Seq(Message("Me tengo que pelar")))
+      val authoredMessage = AuthoredMessageStub.random
+
+      msgAnalyticsService.groupByUserName(Seq(authoredMessage)) should
+      contain theSameElementsAs Map(authoredMessage.userId -> Seq(authoredMessage.message))
     }
 
     "group messages by user" in {
 
       val msgAnalyticsService = new MessageAnalyticsService()
 
-      msgAnalyticsService.groupByUserName(
-        Seq(
-          UserMessage(
-            UserName("Jorge Avila"),
-            Message("Me tengo que pelar")
-          ),
-          UserMessage(
-            UserName("SergiGP"),
-            Message("La burbuja va a estallar")
-          ),
-          UserMessage(
-            UserName("SergiGP"),
-            Message("Ya llegareis")
-          ),
-          UserMessage(
-            UserName("Dani De Ripo"),
-            Message("El TT es un iman...")
-          ),
-          UserMessage(
-            UserName("JaviCane"),
-            Message("Cosa fina")
-          ),
-          UserMessage(
-            UserName("Jorge Avila"),
-            Message("Yo fui a las pruebas de la Real")
-          )
-        )
-      ) should contain theSameElementsAs Map(
-        UserName("Jorge Avila") -> Seq(
-          Message("Me tengo que pelar"),
-          Message("Yo fui a las pruebas de la Real")
-        ),
-        UserName("SergiGP") -> Seq(
-          Message("La burbuja va a estallar"),
-          Message("Ya llegareis")
-        ),
-        UserName("Dani De Ripo") -> Seq(
-          Message("El TT es un iman...")
-        ),
-        UserName("JaviCane") -> Seq(
-          Message("Cosa fina")
-        )
-      )
-    }
+      val dani = UserIdStub.create("Dani")
+      val gerard = UserIdStub.create("Gerard")
 
+      val daniMessage1 = AuthoredMessageStub.create(userId = dani)
+      val daniMessage2 = AuthoredMessageStub.create(userId = dani)
+      val daniMessage3 = AuthoredMessageStub.create(userId = dani)
+      val gerardMessage1 = AuthoredMessageStub.create(userId = gerard)
+      val gerardMessage2 = AuthoredMessageStub.create(userId = gerard)
+
+      val messages = Seq(daniMessage1, daniMessage2, daniMessage3, gerardMessage1, gerardMessage2)
+
+      val groupedMessages = Map(
+        dani -> Seq(daniMessage1.message, daniMessage2.message, daniMessage3.message),
+        gerard -> Seq(gerardMessage1.message, gerardMessage2.message)
+      )
+
+      msgAnalyticsService.groupByUserName(messages) should contain theSameElementsAs groupedMessages
+    }
   }
 }

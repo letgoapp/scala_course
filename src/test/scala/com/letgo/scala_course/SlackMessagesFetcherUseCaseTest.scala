@@ -2,15 +2,15 @@ package com.letgo.scala_course
 
 import akka.actor.ActorSystem
 import org.scalatest.{GivenWhenThen, WordSpec}
-import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.concurrent.{Eventually, ScalaFutures}
 import org.scalatest.Matchers._
 import org.scalatest.time.{Millis, Seconds, Span}
 
 import com.letgo.scala_course.application.{SlackMessageAdderUseCase, SlackMessagesFetcherUseCase}
-import com.letgo.scala_course.domain.{ChannelId, Message}
 import com.letgo.scala_course.infrastructure.GilbertSlackClient
+import com.letgo.scala_course.infrastructure.stub.{ChannelIdStub, MessageStub}
 
-class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with ScalaFutures {
+class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with ScalaFutures with Eventually {
   implicit private val actorSystem      = ActorSystem("test-actor-system")
   implicit private val executionContext = scala.concurrent.ExecutionContext.global
 
@@ -19,9 +19,11 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
     interval = scaled(Span(100, Millis))
   )
 
-  private val client                      = new GilbertSlackClient
+  private val client = new GilbertSlackClient
+
   private def slackMessagesFetcherUseCase = new SlackMessagesFetcherUseCase(client)
-  private def slackMessageAdderUseCase    = new SlackMessageAdderUseCase(client)
+
+  private def slackMessageAdderUseCase = new SlackMessageAdderUseCase(client)
 
   "SlackMessagesFetcher" should {
     "fetch the last message published to a channel" in {
@@ -31,20 +33,23 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       And("an existing channel name")
 
-      val scalaCourseChannelId = ChannelId("C3YPYMQ2D")
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
 
       And("a published message to the channel")
 
-      val message = Message("Jorge, cortate el pelo")
+      val message = MessageStub.random
       slackMessageAdderUseCase.add(scalaCourseChannelId, message).futureValue
 
       When("we fetch the channel messages")
-
-      val messages = fetcher.fetch(scalaCourseChannelId)
-
       Then("it should return the last added one")
 
-      messages.futureValue.head shouldBe message
+      eventually {
+        val authoredMessages = fetcher.fetch(scalaCourseChannelId).futureValue
+
+        val messages = authoredMessages.map(_.message)
+
+        messages should contain(message)
+      }
     }
 
     "increment the number of calls to the Slack API when executing it" in {
@@ -54,7 +59,7 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       And("an existing channel name")
 
-      val scalaCourseChannelId = ChannelId("C3YPYMQ2D")
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
 
       When("we fetch the channel messages twice")
 
@@ -73,7 +78,7 @@ class SlackMessagesFetcherUseCaseTest extends WordSpec with GivenWhenThen with S
 
       And("an existing channel name")
 
-      val scalaCourseChannelId = ChannelId("C3YPYMQ2D")
+      val scalaCourseChannelId = ChannelIdStub.scalaCourse
 
       When("we fetch with cache the channel messages twice")
 
