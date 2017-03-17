@@ -23,4 +23,8 @@ object MessageActionStub {
 
   def randomNonEmptySeq(numElements: Int = IntStub.randomNotZero(2)): Seq[MessageAction] =
     (0 to numElements).map(_ => random)
+
+  val nope: MessageAction = create(text = "Nope, dismiss", name = "no", requireConfirmation = false)
+
+  val yes: MessageAction = create(text = "Yes, deploy", name = "yes", requireConfirmation = true)
 }

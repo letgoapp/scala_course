@@ -11,4 +11,9 @@ object MessageStub {
   def random: Message = create()
 
   def closedChatPullRequest: Message = create(text = MessageTextStub.closedChatPullRequest, actions = None)
+
+  def deploySuggestion(repository: Repository): Message = create(
+    text = MessageTextStub.deploySuggestion(repository: Repository),
+    actions = Some(Seq(MessageActionStub.nope, MessageActionStub.yes))
+  )
 }

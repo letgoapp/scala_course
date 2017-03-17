@@ -11,7 +11,7 @@ import org.scalatest.WordSpec
 import com.letgo.scala_course.application.{RepositoriesWithPullRequestClosedUseCase, SlackMessageAdderUseCase}
 import com.letgo.scala_course.domain.SlackClient
 import com.letgo.scala_course.infrastructure.GilbertSlackClient
-import com.letgo.scala_course.infrastructure.stub.{ChannelIdStub, MessageStub, MessageTextStub, RepositoryStub}
+import com.letgo.scala_course.infrastructure.stub.{ChannelIdStub, MessageStub, RepositoryStub}
 
 final class RepositoriesWithPullRequestClosedUseCaseTest extends WordSpec with ScalaFutures with Eventually {
 

@@ -1,9 +1,9 @@
 package com.letgo.scala_course
 
+import org.scalatest.{GivenWhenThen, WordSpec}
 import org.scalatest.Matchers._
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Seconds, Span}
-import org.scalatest.{GivenWhenThen, WordSpec}
 
 import com.letgo.scala_course.domain.service.MessageCensor
 import com.letgo.scala_course.domain.MessageText
